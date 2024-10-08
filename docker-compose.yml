@@ -1,0 +1,23 @@
+services:
+  api:
+    container_name: gatekeeper
+    image: gatekeeper
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    networks:
+      - gatekeeper
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
+
+networks:
+  gatekeeper:
+    driver: bridge
