@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gatekeeper-config
+  namespace: gatekeeper
+data:
+  db-port: "5432"
+  db-name: "gatekeep"
