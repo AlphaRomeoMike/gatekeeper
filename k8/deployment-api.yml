@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
         - name: gatekeeper
-          image: gatekeeper:latest
+          image: arm1997/gatekeeper:dev
           ports:
             - containerPort: 3000
+              
           env:
             - name: DB_HOST
               value: "pgsql" # kubernetes service name will be resolved by K8

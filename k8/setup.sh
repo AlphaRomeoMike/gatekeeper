@@ -14,8 +14,9 @@ for file in "$K8S_DIR"/*.yml; do
   if [ -f "$file" ]; then
     echo "Applying $file..."
     minikube kubectl -- apply -f "$file"
-    echo "All resources have been applied."
   else
     echo "No YAML files found in $K8S_DIR."
   fi
 done
+
+echo "All resources have been applied."
