@@ -2,6 +2,7 @@ services:
   api:
     container_name: gatekeeper
     image: gatekeeper
+    restart: unless_stopped
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,6 +24,7 @@ services:
   db:
     container_name: pgsql
     image: postgres:latest
+    restart: unless_stopped
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
