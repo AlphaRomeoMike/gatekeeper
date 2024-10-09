@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { Roles } from './role.decorator';
 import { Role } from './role.enum';
-import { RoleAssignDto } from './role.dto';
+import { RoleAssignDto, UserFilterDto } from './role.dto';
 import { RoleGuard } from './role.guard';
 
 @Controller('roles')
@@ -23,7 +23,7 @@ export class RoleController {
 
   @Get('/assign')
   @Roles(Role.ADMIN)
-  getUsers() {
+  getUsers(@Query() _query: UserFilterDto) {
     try {
       return this._service.getUsers(_query);
     } catch (error) {
