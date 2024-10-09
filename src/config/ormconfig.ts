@@ -5,11 +5,11 @@ config();
 
 export const configuration: DataSourceOptions = {
   type: (process.env.TYPE as any) ?? 'postgres',
-  host: process.env.DB_HOST || '10.10.44.69',
-  port: parseInt(process.env.DB_PORT, 10) ?? 4510,
-  username: process.env.DB_USERNAME || 'docker',
-  password: process.env.DB_PASSWORD || 'docker',
-  database: process.env.DB_NAME || 'docker',
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT, 10) ?? 5432,
+  username: process.env.DB_USERNAME || 'gatekeeper',
+  password: process.env.DB_PASSWORD || 'gatekeeper',
+  database: process.env.DB_NAME || 'gatekeep',
   synchronize: false,
   multipleStatements: true,
   logging: true,

@@ -9,14 +9,54 @@ services:
     ports:
       - "3000:3000"
       - "9229:9229"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - gatekeeper
     volumes:
       - .:/app
       - node_modules:/app/node_modules
 
+  db:
+    container_name: pgsql
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PORT: ${DB_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 1s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - pgsql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gatekeeper
+
+  admin:
+    container_name: adminer
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ADMINER_DEFAULT_SERVER: 'db'
+    networks:
+      - gatekeeper
+
 volumes:
   node_modules:
+  pgsql:
 
 networks:
   gatekeeper:
