@@ -1,10 +1,23 @@
 ### Assign Role
 POST http://localhost:3000/roles/assign HTTP/1.1
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzNTMzOX0.9vwd60xfj7rmkaGodqXLiuC0_WFFYzTglvb_SXLwdE4
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODY0MTA2MX0.ps8oqOKHU1WXvq3MXNTp6cgmkik2Jf7jpL9JArbCRkkbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzOTY0Nn0.0Emo0BPl6WfKQV7JCKnxMpEEsp1WGmJOCtT_i-m09jg
 Content-Type: application/json
 Accept: application/json
 
 {
-    "user_id": "f09d21e5-8bd5-4a74-967a-52c27c47c232",
-    "role_id": "f09d21e5-8bd5-4a74-967a-52c27c47c232"
+    "user_id": "fcb01722-e46b-4c19-827c-1137b761e118",
+    "role_id": "0956de5f-02be-4751-9de3-35b2865f254f"
 }
+
+### Get users
+GET http://localhost:3000/roles/assign HTTP/1.1
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODY0MTA2MX0.ps8oqOKHU1WXvq3MXNTp6cgmkik2Jf7jpL9JArbCRkkbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzOTY0Nn0.0Emo0BPl6WfKQV7JCKnxMpEEsp1WGmJOCtT_i-m09jg
+Content-Type: application/json
+Accept: application/json
+
+
+### Get roles list
+GET http://localhost:3000/roles/ HTTP/1.1
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODY0MTA2MX0.ps8oqOKHU1WXvq3MXNTp6cgmkik2Jf7jpL9JArbCRkkbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzOTY0Nn0.0Emo0BPl6WfKQV7JCKnxMpEEsp1WGmJOCtT_i-m09jg
+Content-Type: application/json
+Accept: application/json

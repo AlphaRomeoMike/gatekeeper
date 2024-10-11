@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { RoleService } from './role.service';
 import { Roles } from './role.decorator';
 import { Role } from './role.enum';
@@ -25,9 +33,19 @@ export class RoleController {
 
   @Get('/assign')
   @Roles(Role.ADMIN)
-  getUsers(@Query() _query: UserFilterDto) {
+  getUsers(@Query() _query: UserFilterDto, @Request() _req) {
     try {
-      return this._service.getUsers(_query);
+      return this._service.getUsers(_query, _req?.user);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('/')
+  @Roles(Role.ADMIN)
+  getRoles() {
+    try {
+      return this._service.getRoles();
     } catch (error) {
       throw error;
     }

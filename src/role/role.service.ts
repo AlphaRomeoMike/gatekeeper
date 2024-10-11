@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Query } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './role.entity';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { User } from 'src/user/user.entity';
 import { ROLE_KEYS } from './role.key';
-import { UserFilterDto } from './role.dto';
+import { RolePaginationDto, UserFilterDto } from './role.dto';
 
 @Injectable()
 export class RoleService {
@@ -35,18 +35,32 @@ export class RoleService {
     });
   }
 
-  async getUsers(_query: UserFilterDto) {
-    const { column, sort, email, from: skip, to: take, name, order } = _query;
+  async getUsers(_query: UserFilterDto, _user: User) {
+    const { column, sort, email, from: skip = 0, to: take = 10, name } = _query;
 
-    const query = this._user_repo.manager.findAndCount(User, {
-      skip: skip,
-      take: take,
-      order: {
-        [column]: order,
-      },
-      where: {
-        role: IsNull(),
-      },
-    });
+    const { '0': users, '1': count } =
+      await this._user_repo.manager.findAndCount(User, {
+        skip: skip,
+        take: take,
+        order: {
+          [column]: sort,
+        },
+        where: {
+          ...(name ? { full_name: name } : {}),
+          ...(email ? { email } : {}),
+          id: Not(_user.id),
+        },
+      });
+
+    return new RolePaginationDto(
+      users,
+      count,
+      Math.floor(skip / take) + 1,
+      take,
+    );
+  }
+
+  async getRoles() {
+    return await this._repo.find();
   }
 }

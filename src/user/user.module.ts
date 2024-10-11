@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { Role } from 'src/role/role.entity';
+import { JwtMiddleware } from 'src/jwt/jwt.middleware';
 
 @Module({
   controllers: [UserController],
@@ -24,4 +25,11 @@ import { Role } from 'src/role/role.entity';
     }),
   ],
 })
-export class UserModule {}
+export class UserModule {
+  configure(_consumer: MiddlewareConsumer) {
+    _consumer.apply(JwtMiddleware).forRoutes({
+      path: '/profile*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

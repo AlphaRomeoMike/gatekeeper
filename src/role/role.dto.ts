@@ -52,7 +52,18 @@ export class UserFilterDto {
 
   @IsNumber()
   to?: number = 10;
+}
 
-  @IsString()
-  order: string;
+export class RolePaginationDto<T> {
+  data: T[];
+  total: number;
+  current: number;
+  take: number;
+
+  constructor(data: T[], total: number, current: number, take: number) {
+    this.data = data;
+    this.total = total;
+    this.current = current;
+    this.take = take;
+  }
 }

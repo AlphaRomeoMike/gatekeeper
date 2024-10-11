@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { User } from './user.entity';
 import { AuthCreateDto, UserCreateDto } from './user.dto';
 import { UserService } from './user.service';
@@ -25,6 +25,18 @@ export class UserController {
       const _auth = await this._service.signin(_credentials);
       return {
         token: _auth,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('/profile')
+  async profile(@Request() _request) {
+    try {
+      const _user = await this._service.profile(_request?.user);
+      return {
+        token: _user,
       };
     } catch (error) {
       throw error;

@@ -3,10 +3,11 @@ import {
   Injectable,
   Logger,
   NestMiddleware,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AUTH_KEYS } from './auth.keys';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
@@ -28,6 +29,8 @@ export class JwtMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       this._logger.error(error);
+      if (error instanceof TokenExpiredError)
+        throw new UnauthorizedException(AUTH_KEYS.TOKEN_EXPIRED);
       throw new ForbiddenException(AUTH_KEYS.INVALID_REQUEST);
     }
   }

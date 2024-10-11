@@ -116,5 +116,7 @@ export class UserService {
     this._logger.warn(`Updated ${_users.length} records!`);
   }
 
-  async validate() {}
+  async profile(_request) {
+    return _request;
+  }
 }
