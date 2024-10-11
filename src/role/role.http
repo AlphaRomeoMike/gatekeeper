@@ -1,8 +1,10 @@
 ### Assign Role
 POST http://localhost:3000/roles/assign HTTP/1.1
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzNTMzOX0.9vwd60xfj7rmkaGodqXLiuC0_WFFYzTglvb_SXLwdE4
 Content-Type: application/json
 Accept: application/json
 
 {
-    "password_hash": "AlphaBravoCharlie!@12"
+    "user_id": "f09d21e5-8bd5-4a74-967a-52c27c47c232",
+    "role_id": "f09d21e5-8bd5-4a74-967a-52c27c47c232"
 }

@@ -4,8 +4,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "user2@example.com",
-    "password_hash": "AlphaBravoCharlie!@12"
+    "email": "user1@example.com",
+    "password_hash": "P@$$w0rd"
 }
 
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "email": "user1@example.com",
-    "password_hash": "AlphaBravoCharlie!@12",
+    "password_hash": "P@$$w0rd",
     "full_name": "Example User 1"
 }
 

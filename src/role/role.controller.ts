@@ -4,8 +4,10 @@ import { Roles } from './role.decorator';
 import { Role } from './role.enum';
 import { RoleAssignDto, UserFilterDto } from './role.dto';
 import { RoleGuard } from './role.guard';
+import { JwtMiddleware } from 'src/jwt/jwt.middleware';
 
 @Controller('roles')
+@UseGuards(JwtMiddleware)
 @UseGuards(RoleGuard)
 export class RoleController {
   constructor(private readonly _service: RoleService) {}

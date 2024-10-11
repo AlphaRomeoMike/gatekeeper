@@ -1,16 +1,27 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
 import { ROLES_KEY } from './role.decorator';
+import { AUTH_KEYS } from 'src/jwt/auth.keys';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(private readonly _reflector: Reflector) {}
+  private readonly _logger = new Logger(RoleGuard.name);
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  constructor(
+    private readonly _reflector: Reflector,
+    @InjectRepository(User) private readonly _repo: Repository<User>,
+  ) {}
+
+  async canActivate(context: ExecutionContext) {
     const requiredRoles = this._reflector.get<string[]>(
       ROLES_KEY,
       context.getHandler(),
@@ -19,8 +30,18 @@ export class RoleGuard implements CanActivate {
     if (!requiredRoles) return true;
 
     const request = context.switchToHttp().getRequest();
-    const user: User = request.user;
+    const user_id = request.user?.id;
 
-    return requiredRoles.includes(user.role.name);
+    if (!user_id) {
+      throw new UnauthorizedException(AUTH_KEYS.INVALID_REQUEST);
+    }
+
+    const user = await this._repo.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+
+    return !!requiredRoles.includes(user?.role?.name);
   }
 }
