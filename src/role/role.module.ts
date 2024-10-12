@@ -4,9 +4,9 @@ import { RoleController } from './role.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Role } from './role.entity';
 import { User } from 'src/user/user.entity';
-import { JwtMiddleware } from 'src/jwt.middleware';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { JwtMiddleware } from 'src/jwt/jwt.middleware';
 
 @Module({
   providers: [RoleService, JwtService],
