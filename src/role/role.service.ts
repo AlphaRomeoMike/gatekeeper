@@ -5,6 +5,7 @@ import { Not, Repository } from 'typeorm';
 import { User } from 'src/user/user.entity';
 import { ROLE_KEYS } from './role.key';
 import { RolePaginationDto, UserFilterDto } from './role.dto';
+import { Role as RoleEnum } from './role.enum';
 
 @Injectable()
 export class RoleService {

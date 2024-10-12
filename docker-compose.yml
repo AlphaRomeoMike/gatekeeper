@@ -18,7 +18,7 @@ services:
     networks:
       - gatekeeper
     volumes:
-      - .:/app
+      # - .:/app
       - node_modules:/app/node_modules
 
   db:

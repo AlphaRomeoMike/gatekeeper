@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './role.decorator';
-import { AUTH_KEYS } from 'src/jwt/auth.keys';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
+import { AUTH_KEYS } from 'src/jwt/auth.keys';
 
 @Injectable()
 export class RoleGuard implements CanActivate {

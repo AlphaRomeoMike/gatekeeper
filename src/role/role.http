@@ -1,4 +1,11 @@
 ### Assign Role
+GET http://localhost:3000/roles/assign/ HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU3NWFlMzk5LTIxMzYtNGU0Ny04YWE0LWUxOGM0N2FiMmY0YSIsImlhdCI6MTcyODU0MjY4N30.xL65s6IoXx_ACfq7A-RVsvmh5RKICNb5DFRPIA8YJzU
+
+
+### Assign Role
 POST http://localhost:3000/roles/assign HTTP/1.1
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODY0MTA2MX0.ps8oqOKHU1WXvq3MXNTp6cgmkik2Jf7jpL9JArbCRkkbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxYTVlMDYwLTRlNDYtNDA3Mi1iNDIzLWQzMzE2ZGUyMWUyYiIsImlhdCI6MTcyODYzOTY0Nn0.0Emo0BPl6WfKQV7JCKnxMpEEsp1WGmJOCtT_i-m09jg
 Content-Type: application/json

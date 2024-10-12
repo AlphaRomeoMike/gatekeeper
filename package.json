@@ -22,7 +22,8 @@
     "migration:gen": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:rev": "npm run typeorm -- migration:revert",
-    "migration:cre": "npm run typeorm -- migration:create"
+    "migration:cre": "npm run typeorm -- migration:create",
+    "seed": "node seeder.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.3",
@@ -42,9 +43,11 @@
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "typeorm-extension": "^3.6.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",

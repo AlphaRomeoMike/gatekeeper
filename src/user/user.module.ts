@@ -16,6 +16,7 @@ import { JwtMiddleware } from 'src/jwt/jwt.middleware';
     TypeOrmModule.forFeature([User, Role]),
     JwtModule.registerAsync({
       useFactory: (_config: ConfigService) => ({
+        global: true,
         secret: _config.getOrThrow<string>('JWT_SECRET'),
         verifyOptions: {
           maxAge: '1h',
