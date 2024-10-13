@@ -5,7 +5,7 @@ import { SeederOptions } from 'typeorm-extension';
 config();
 
 export const configuration: DataSourceOptions & SeederOptions = {
-  type: (process.env.TYPE as any) ?? 'postgres',
+  type: (process.env.DB_TYPE as any) ?? 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT, 10) ?? 5432,
   username: process.env.DB_USERNAME || 'gatekeeper',
