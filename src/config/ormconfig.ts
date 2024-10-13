@@ -17,7 +17,7 @@ export const configuration: DataSourceOptions & SeederOptions = {
   entities: ['**/*.entity{ .ts,.js}'],
   seeds: ['**/*.seeder{ .ts,.js}'],
   factories: ['**/*.factory{ .ts,.js}'],
-  migrations: ['dist/migration/*{.ts,.js}'],
+  migrations: ['dist/migrations/*{.ts,.js}'],
   migrationsRun: true,
 };
 
