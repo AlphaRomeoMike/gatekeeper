@@ -11,7 +11,7 @@ export const configuration: DataSourceOptions & SeederOptions = {
   username: process.env.DB_USERNAME || 'gatekeeper',
   password: process.env.DB_PASSWORD || 'gatekeeper',
   database: process.env.DB_NAME || 'gatekeep',
-  synchronize: false,
+  synchronize: true,
   multipleStatements: true,
   logging: true,
   entities: ['**/*.entity{ .ts,.js}'],

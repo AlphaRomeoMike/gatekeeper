@@ -43,22 +43,30 @@ export class AuthService {
   }
 
   async login(_credentials: Omit<SignupUserDto, 'name'>) {
-    this._logger.debug('Trying to login user: %s', _credentials.email);
+    this._logger.debug(`Trying to login user: ${_credentials.email}`);
 
     const exist = await this.userExists(_credentials.email);
 
     if (!exist) throw new NotFoundException(KEYS.NOTFOUND);
 
-    let user = await this._repo.findOneBy({
-      email: _credentials.email,
+    let user = await this._repo.findOne({
+      where: {
+        email: _credentials.email,
+      },
+      select: ['id', 'password'],
     });
 
     if (!user || !(await compare(_credentials.password, user.password)))
       throw new NotFoundException(KEYS.NOTFOUND);
 
-    let token = await this._jwt.signAsync({
-      id: user.id,
-    });
+    let token = await this._jwt.signAsync(
+      {
+        id: user.id,
+      },
+      {
+        secret: this._config.get('JWT_SECRET'),
+      },
+    );
 
     return token;
   }

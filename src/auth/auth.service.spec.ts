@@ -13,7 +13,7 @@ const mockRepo = {
   exists: jest.fn(),
   save: jest.fn(),
   create: jest.fn((user) => user),
-  findOneBy: jest.fn(),
+  findOne: jest.fn(),
 };
 
 jest.mock('bcrypt');
@@ -33,12 +33,14 @@ describe('AuthService', () => {
         },
         {
           provide: ConfigService,
-          useValue: {},
+          useValue: {
+            get: jest.fn().mockReturnValue('abc'),
+          },
         },
         {
           provide: JwtService,
           useValue: {
-            signAsync: jest.fn() as unknown as JwtService,
+            signAsync: jest.fn(),
           },
         },
       ],
@@ -171,7 +173,7 @@ describe('AuthService', () => {
       };
 
       jest.spyOn(service, 'userExists').mockResolvedValueOnce(true);
-      mockRepo.findOneBy.mockResolvedValueOnce(user);
+      mockRepo.findOne.mockResolvedValueOnce(user);
       (bcrypt.compare as jest.Mock).mockResolvedValueOnce(false);
 
       await expect(service.login(credentials)).rejects.toThrow(
@@ -192,15 +194,16 @@ describe('AuthService', () => {
       };
 
       jest.spyOn(service, 'userExists').mockResolvedValueOnce(true);
-      mockRepo.findOneBy.mockResolvedValueOnce(user);
+      mockRepo.findOne.mockResolvedValueOnce(user);
 
       (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
 
       (jwt.signAsync as jest.Mock).mockResolvedValueOnce('token');
       const result = await service.login(credentials);
+      const secret = 'abc';
 
       expect(result).toEqual('token');
-      expect(jwt.signAsync).toHaveBeenCalledWith({ id: user.id });
+      expect(jwt.signAsync).toHaveBeenCalledWith({ id: user.id }, { secret });
     });
   });
 });

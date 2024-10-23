@@ -4,9 +4,11 @@ export class SignupUserDto {
   @IsString()
   name: string;
 
+  @IsString()
   @IsEmail()
   email: string;
 
+  @IsString()
   @IsStrongPassword()
   password: string;
 }

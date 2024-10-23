@@ -21,4 +21,15 @@ export class AuthController {
       throw error;
     }
   }
+
+  @Post('/signin')
+  async signin(@Body() _credentials: Omit<SignupUserDto, 'name'>) {
+    try {
+      return {
+        token: await this._service.login(_credentials),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

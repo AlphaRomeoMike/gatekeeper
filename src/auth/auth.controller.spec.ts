@@ -11,6 +11,7 @@ describe('AuthController', () => {
 
   const mockAuthService = {
     signup: jest.fn(),
+    login: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -49,22 +50,46 @@ describe('AuthController', () => {
       expect(response).toEqual(result);
       expect(mockAuthService.signup).toHaveBeenCalledWith(signupUserDto);
     });
+
+    it('should throw ConflictException if signup fails', async () => {
+      const signupUserDto: SignupUserDto = {
+        email: 'test@example.com',
+        password: 'Password123!',
+        name: 'Test User',
+      };
+
+      mockAuthService.signup.mockRejectedValue(
+        new ConflictException(KEYS.ALREADYEXISTS),
+      );
+
+      await expect(controller.signup(signupUserDto)).rejects.toThrow(
+        ConflictException,
+      );
+      expect(mockAuthService.signup).toHaveBeenCalledWith(signupUserDto);
+    });
   });
 
-  it('should throw ConflictException if signup fails', async () => {
-    const signupUserDto: SignupUserDto = {
-      email: 'test@example.com',
-      password: 'Password123!',
-      name: 'Test User',
-    };
+  describe('signin', () => {
+    it('should return a token on successful login', async () => {
+      const credentials = { email: 'user@example.com', password: 'password' };
+      const token = 'dummy-token';
+      jest.spyOn(service, 'login').mockResolvedValue(token);
 
-    mockAuthService.signup.mockRejectedValue(
-      new ConflictException(KEYS.ALREADYEXISTS),
-    );
+      const result = await controller.signin(credentials);
+      expect(result).toEqual({ token });
+      expect(service.login).toHaveBeenCalledTimes(1);
+      expect(service.login).toHaveBeenCalledWith(credentials);
+    });
 
-    await expect(controller.signup(signupUserDto)).rejects.toThrow(
-      ConflictException,
-    );
-    expect(mockAuthService.signup).toHaveBeenCalledWith(signupUserDto);
+    it('should throw an error if login fails', async () => {
+      const credentials = { email: 'user@example.com', password: 'password' };
+      jest.spyOn(service, 'login').mockRejectedValue(new Error('Login failed'));
+
+      await expect(controller.signin(credentials)).rejects.toThrowError(
+        'Login failed',
+      );
+      expect(service.login).toHaveBeenCalledTimes(1);
+      expect(service.login).toHaveBeenCalledWith(credentials);
+    });
   });
 });
