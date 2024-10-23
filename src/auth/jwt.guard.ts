@@ -7,12 +7,16 @@ import {
 } from '@nestjs/common';
 import { KEYS } from './auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
   private readonly _logger = new Logger(JwtGuard.name);
 
-  constructor(private readonly _jwt: JwtService) {}
+  constructor(
+    private readonly _jwt: JwtService,
+    private readonly _config: ConfigService,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
@@ -21,8 +25,10 @@ export class JwtGuard implements CanActivate {
     if (!token) throw new UnauthorizedException(KEYS.UNAUTHORIZED);
 
     try {
-      const decoded = await this._jwt.verifyAsync(token);
-      request.user = decoded;
+      const decoded = await this._jwt.verifyAsync(token, {
+        secret: this._config.getOrThrow<string>('JWT_SECRET'),
+      });
+      request.user = decoded?.id;
       return true;
     } catch (error) {
       this._logger.error(error);

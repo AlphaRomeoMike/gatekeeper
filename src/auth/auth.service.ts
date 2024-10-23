@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -69,5 +70,15 @@ export class AuthService {
     );
 
     return token;
+  }
+
+  async validate(_id: string) {
+    const user = await this._repo.findOneBy({
+      id: _id,
+    });
+
+    if (!user) throw new BadRequestException("User doesn't exist");
+
+    return user;
   }
 }

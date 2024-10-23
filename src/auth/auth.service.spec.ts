@@ -5,7 +5,11 @@ import { User } from './user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { SignupUserDto } from './auth.dto';
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -14,6 +18,7 @@ const mockRepo = {
   save: jest.fn(),
   create: jest.fn((user) => user),
   findOne: jest.fn(),
+  findOneBy: jest.fn(),
 };
 
 jest.mock('bcrypt');
@@ -204,6 +209,31 @@ describe('AuthService', () => {
 
       expect(result).toEqual('token');
       expect(jwt.signAsync).toHaveBeenCalledWith({ id: user.id }, { secret });
+    });
+  });
+
+  describe('validate', () => {
+    it('should return the user if found', async () => {
+      const userId = '1';
+      const user = { id: userId, name: 'Test User' };
+
+      (repo.findOneBy as jest.Mock).mockResolvedValue(user);
+
+      const result = await service.validate(userId);
+
+      expect(result).toEqual(user);
+      expect(repo.findOneBy).toHaveBeenCalledWith({ id: userId });
+    });
+
+    it('should throw BadRequestException if user does not exist', async () => {
+      const userId = '1';
+
+      (repo.findOneBy as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.validate(userId)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(repo.findOneBy).toHaveBeenCalledWith({ id: userId });
     });
   });
 });

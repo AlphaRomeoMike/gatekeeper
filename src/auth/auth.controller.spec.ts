@@ -3,6 +3,10 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { KEYS, SignupUserDto } from './auth.dto';
 import { ConflictException } from '@nestjs/common';
+import { ValidatedRequest } from 'src/interfaces/request.interface';
+import { JwtGuard } from './jwt.guard';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -12,6 +16,7 @@ describe('AuthController', () => {
   const mockAuthService = {
     signup: jest.fn(),
     login: jest.fn(),
+    validate: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -22,6 +27,20 @@ describe('AuthController', () => {
           provide: AuthService,
           useValue: mockAuthService,
         },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn().mockReturnValue('your-secret-value'),
+          },
+        },
+        {
+          provide: JwtService,
+          useValue: {
+            verifyAsync: jest.fn(),
+            signAsync: jest.fn(),
+          },
+        },
+        JwtGuard,
       ],
     }).compile();
 
@@ -90,6 +109,38 @@ describe('AuthController', () => {
       );
       expect(service.login).toHaveBeenCalledTimes(1);
       expect(service.login).toHaveBeenCalledWith(credentials);
+    });
+  });
+
+  describe('validate', () => {
+    it('should return the validated user', async () => {
+      const userId = 1;
+      const validatedUser = { id: userId, name: 'Test User' };
+
+      (service.validate as jest.Mock).mockResolvedValue(validatedUser);
+
+      const request: ValidatedRequest = {
+        user: { id: userId },
+      } as any;
+
+      const result = await controller.validate(request);
+
+      expect(result).toEqual({ user: validatedUser });
+      expect(service.validate).toHaveBeenCalledWith(userId);
+    });
+
+    it('should throw an error if validation fails', async () => {
+      const userId = 1;
+      const error = new Error('Validation failed');
+
+      (service.validate as jest.Mock).mockRejectedValue(error);
+
+      const request: ValidatedRequest = {
+        user: { id: userId },
+      } as any;
+
+      await expect(controller.validate(request)).rejects.toThrowError(error);
+      expect(service.validate).toHaveBeenCalledWith(userId);
     });
   });
 });

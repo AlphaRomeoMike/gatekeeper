@@ -1,6 +1,16 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupUserDto } from './auth.dto';
+import { JwtGuard } from './jwt.guard';
+import { ValidatedRequest } from 'src/interfaces/request.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +39,19 @@ export class AuthController {
         token: await this._service.login(_credentials),
       };
     } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('/validate')
+  @UseGuards(JwtGuard)
+  async validate(@Req() request: ValidatedRequest) {
+    try {
+      return {
+        user: await this._service.validate(request.user.id),
+      };
+    } catch (error) {
+      this._logger.error(error);
       throw error;
     }
   }
