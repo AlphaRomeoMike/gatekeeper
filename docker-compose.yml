@@ -56,6 +56,15 @@ services:
     networks:
       - gatekeeper
 
+  mailer:
+    container_name: mailer
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - gatekeeper
+
 volumes:
   node_modules:
   pgsql:
